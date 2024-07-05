@@ -16,21 +16,11 @@ function guardarCompraLocalStorage() {
     localStorage.setItem('compras', JSON.stringify(compras));
 }
 
-function cargaProductosLocalStorage() {
-    const productos = localStorage.getItem('productos');
-    return productos ? JSON.parse(productos) : guardarProductoLocalStorage();
-}
-
-function guardarProductoLocalStorage() {
-    localStorage.setItem('productos', JSON.stringify(productos));
-}
-
 function agregarPedido(id, cantidad) {
     const producto = productos.find(p => p.id === id);
     producto ? null : alert("Producto no encontrado");
     
     producto.stock -= cantidad;
-
     cantidadStock = document.getElementById('stock');
     cantidadStock.setAttribute("style", "margin: 50px 50px; color: cadetblue; font-size: large; font-weight: bolder;  text-decoration-line: overline;");
     if (producto.stock < 0) {
@@ -50,7 +40,6 @@ function agregarPedido(id, cantidad) {
     }
     
     const pedidoItem = pedidos.find(item => item.id === id);
-
     if (pedidoItem) {
         pedidoItem.cantidad += cantidad;
         pedidoItem.precioFinal = pedidoItem.cantidad * producto.precio;
@@ -69,9 +58,8 @@ function agregarPedido(id, cantidad) {
         position: "center",
         style: { background: "cadetblue", color: "black"}
     }).showToast();
-
-    guardarProductoLocalStorage();
     guardarPedidoSessionStorage();
+    localStorage.setItem('productos', JSON.stringify(productos));
 }
 
 function mostrarPedido() {

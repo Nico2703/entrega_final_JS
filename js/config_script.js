@@ -17,4 +17,3 @@ contenedor.addEventListener('mouseout', () => {
     contenedor.style.fontSize = 'medium';
 })
 main.appendChild(contenedor);
-
