@@ -61,6 +61,13 @@ main h2{
     padding: 20px 20px ;
 }
 
+main h3{
+    color: cadetblue;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration-line: overline;
+    padding: 20px 20px ;
+}
+
 body{
     background-image: linear-gradient(black, grey);
 }

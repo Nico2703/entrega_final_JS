@@ -1,3 +1,6 @@
+// Reseteo del local storage - Solo para pruebas
+// localStorage.clear();
+
 var productosGuardados = localStorage.getItem('productos');
 if (productosGuardados){
     var productos = JSON.parse(productosGuardados);

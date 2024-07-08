@@ -4,10 +4,11 @@ main.style.display = 'flex';
 main.style.flexDirection = 'column';
 
 let contenedor = document.createElement('div');
-contenedor.innerHTML = `<h2> Listado de productos disponibles </h2>
-                        <h2> Registro de pedidos </h2>
-                        <button style="margin: 60px 20px; padding: 20px;" onclick="localStorage.clear(); sessionStorage.clear();"> Reset "local/session" storage / Para prueba</button>`
-contenedor.style.width = '40%';
+contenedor.innerHTML = `<h2> Chequeá nuestros productos disponibles </h2>
+                        <h2> Elegí el tuyo y armá tu pedido </h2>
+                        <h2>  Aguardamos tu compra </h2>
+                        <h3>  Para consultas, comunicate al + 54 11 4345 3221 </h3>`
+contenedor.style.width = '50%';
 contenedor.addEventListener('mouseover', () => {
     contenedor.style.border = '2px outset cadetblue';
     contenedor.style.fontSize = 'larger';
