@@ -10,7 +10,6 @@ const formulario = document.getElementById('form_in');
 
 formulario.addEventListener("submit", function(event){
     event.preventDefault();
-    console.log(pedidos)
     if (pedidos.length===0){
         Swal.fire({
             position: "center",
@@ -55,8 +54,8 @@ formulario.addEventListener("submit", function(event){
                 guardarCompraLocalStorage();
 
                 sessionStorage.clear();
-                var confirmarBoton = document.getElementById('botonConfirma');
-                var limpiarBoton = document.getElementById('botonLimpia');
+                let confirmarBoton = document.getElementById('botonConfirma');
+                let limpiarBoton = document.getElementById('botonLimpia');
                 confirmarBoton.style.display = "none";
                 limpiarBoton.style.display = "none";
             } else if (result.isDenied) {
@@ -66,7 +65,7 @@ formulario.addEventListener("submit", function(event){
     }
 });
 
-var sumaPedido = 0;
+let sumaPedido = 0;
 pedidos.forEach(item => {
 sumaPedido += item.precioFinal;
 });

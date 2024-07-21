@@ -18,7 +18,13 @@ function guardarCompraLocalStorage() {
 
 function agregarPedido(id, cantidad) {
     const producto = productos.find(p => p.id === id);
-    producto ? null : alert("Producto no encontrado");
+    producto ? null :   Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Producto no encontrado`,
+        showConfirmButton: false,
+        timer: 1000
+    });
     
     producto.stock -= cantidad;
     cantidadStock = document.getElementById('stock');
@@ -86,6 +92,6 @@ function mostrarHora(){
 mostrarHora();
 
 function redirigirURL() {
-    var newWindow = window.open();
+    let newWindow = window.open();
     newWindow.location.href = 'https://www.johnniewalker.com/es-ar/';
 }
