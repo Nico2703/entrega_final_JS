@@ -16,58 +16,6 @@ function guardarCompraLocalStorage() {
     localStorage.setItem('compras', JSON.stringify(compras));
 }
 
-function agregarPedido(id, cantidad) {
-    const producto = productos.find(p => p.id === id);
-    producto ? null :   Swal.fire({
-        position: "center",
-        icon: "error",
-        title: `Producto no encontrado`,
-        showConfirmButton: false,
-        timer: 1000
-    });
-    
-    producto.stock -= cantidad;
-    cantidadStock = document.getElementById('stock');
-    cantidadStock.setAttribute("style", "margin: 50px 50px; color: cadetblue; font-size: large; font-weight: bolder;  text-decoration-line: overline;");
-    if (producto.stock < 0) {
-        cantidadStock.innerHTML = `<p> -- Sin stock disponible de ${producto.nombre} -- </p>`;
-        
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: `Stock no disponible de ${producto.nombre}`,
-            showConfirmButton: false,
-            timer: 1000
-        });
-        return;
-    }
-    else{
-        cantidadStock.innerHTML = `<p> -- Stock disponible de ${producto.nombre}: ${producto.stock} -- </p>`;
-    }
-    
-    const pedidoItem = pedidos.find(item => item.id === id);
-    if (pedidoItem) {
-        pedidoItem.cantidad += cantidad;
-        pedidoItem.precioFinal = pedidoItem.cantidad * producto.precio;
-    } else {
-        pedidos.push({
-            ...producto,
-            cantidad: cantidad,
-            precioFinal: parseFloat((cantidad * producto.precio) * 1.21)
-        });
-    }
-    
-    Toastify({
-        text: "Agregado al carrito",
-        duration: 1500,
-        gravity: "top",
-        position: "center",
-        style: { background: "cadetblue", color: "black"}
-    }).showToast();
-    guardarPedidoSessionStorage();
-    localStorage.setItem('productos', JSON.stringify(productos));
-}
-
 function mostrarPedido() {
     pedidos.forEach(item => {
         const contenedor = document.createElement('tr');
@@ -89,9 +37,93 @@ function mostrarHora(){
     footerTime.style.color = 'antiquewhite';
     footerTime.style.marginTop = '20px';
 }
-mostrarHora();
 
 function redirigirURL() {
     let newWindow = window.open();
     newWindow.location.href = 'https://www.johnniewalker.com/es-ar/';
+}
+
+function agregarPedido(id, cantidad) {
+    const producto = productos.find(p => p.id === id);
+    producto ? null :   Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Producto no encontrado`,
+        showConfirmButton: false,
+        timer: 1000
+    });
+    producto.stock -= cantidad;
+    const pedidoItem = pedidos.find(item => item.id === id);
+    manejoStock(producto, cantidad, pedidoItem);
+}
+
+function manejoStock(producto, cantidad, pedidoItem){
+    cantidadStock = document.getElementById('stock');
+    cantidadStock.setAttribute("style", "margin: 50px 50px; color: cadetblue; font-size: large; font-weight: bolder;  text-decoration-line: overline;");
+    const mensajeStock = producto.stock < 0 
+    ? `<p> -- Sin stock disponible de ${producto.nombre} -- </p>`
+    : `<p> -- Stock disponible de ${producto.nombre}: ${producto.stock} -- </p>`;
+    cantidadStock.innerHTML = mensajeStock;
+    if (producto.stock < 0) { 
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: `Stock no disponible de ${producto.nombre}`,
+            showConfirmButton: false,
+            timer: 1000
+        });
+    }else{
+        Toastify({
+            text: "Agregado al carrito",
+            duration: 1500,
+            gravity: "top",
+            position: "center",
+            style: { background: "cadetblue", color: "black"}
+        }).showToast();
+        manejoPedido(producto, cantidad, pedidoItem);
+    }
+}
+
+function manejoPedido(producto, cantidad, pedidoItem){
+    pedidoItem ? ( 
+            pedidoItem.cantidad += cantidad,
+            pedidoItem.precioFinal = pedidoItem.cantidad * producto.precio * 1.21
+        ) 
+        : pedidos.push({
+            ...producto,
+            cantidad: cantidad,
+            precioFinal: parseFloat((cantidad * producto.precio) * 1.21)
+        });
+    guardarPedidoSessionStorage();
+    localStorage.setItem('productos', JSON.stringify(productos));
+}
+
+function manejoCompra(envioSeleccionado){
+    let sumaPedido = 0;
+    pedidos.forEach(item => {
+    sumaPedido += item.precioFinal;
+    });
+    const cadenaEnvioSeleccionado = envioSeleccionado.split('-');
+    const costoEnvioSeleccionado = cadenaEnvioSeleccionado[1].replace(/\$/g, '');
+    sumaPedido += parseFloat(costoEnvioSeleccionado);
+    let contenedor = document.createElement('tr');
+    contenedor.innerHTML = `<td> $${parseFloat(costoEnvioSeleccionado)} </td>
+                            <td> $${sumaPedido.toFixed(2)} </td>`;
+    tablaBody_Media.appendChild(contenedor);
+    compras.push({
+        pedidos: pedidos,
+        envio: costoEnvioSeleccionado,
+        importeFinal: sumaPedido.toFixed(2)
+    });
+    pedidos.forEach(function(item, index){
+        let contenedor = document.createElement('tr');
+        contenedor.innerHTML = `<td> ${index+1}- COMPRA CONFIRMADA DE (${item.cantidad}) ${item.marca.toUpperCase()} - ${item.nombre.toUpperCase()}</td>`;
+        tablaBody_Final.appendChild(contenedor);
+    });
+    guardarCompraLocalStorage();
+    sessionStorage.clear();
+    let confirmarBoton = document.getElementById('botonConfirma');
+    let limpiarBoton = document.getElementById('botonLimpia');
+    confirmarBoton.style.display = "none";
+    limpiarBoton.style.display = "none";
 }

@@ -15,7 +15,6 @@ const peticionProductos = async () => {
                                 <h5> ${producto.descripcion} </h5> 
                                 <h5 style='padding-bottom: 10px;'> ${producto.marca} </h5> 
                                 <h5> Precio: $${producto.precio} </h5>
-                                
                                 <button style='margin-top: 10px; background-color: cadetblue;' onclick="agregarPedido(${producto.id}, 1)"> Agregar a Pedidos </button>`
         contenedor.style.width = '15%';
         contenedor.style.border = '2px solid cadetblue';
@@ -40,4 +39,13 @@ const peticionProductos = async () => {
         }
 }
 
-peticionProductos();
+peticionProductos()
+    .catch(error =>
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Error al cargar productos",
+            showConfirmButton: false,
+            timer: 0
+        })
+);
