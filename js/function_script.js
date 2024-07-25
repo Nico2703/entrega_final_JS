@@ -59,7 +59,7 @@ function agregarPedido(id, cantidad) {
 
 function manejoStock(producto, cantidad, pedidoItem){
     cantidadStock = document.getElementById('stock');
-    cantidadStock.setAttribute("style", "margin: 50px 50px; color: cadetblue; font-size: large; font-weight: bolder;  text-decoration-line: overline;");
+    cantidadStock.setAttribute("style", "margin: 50px 50px; width: 25%; color: cadetblue; background-color: antiquewhite; font-size: large; font-weight: bolder; border: 3px solid cadetblue;");
     const mensajeStock = producto.stock < 0 
     ? `<p> -- Sin stock disponible de ${producto.nombre} -- </p>`
     : `<p> -- Stock disponible de ${producto.nombre}: ${producto.stock} -- </p>`;
