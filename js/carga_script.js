@@ -1,3 +1,6 @@
+// Reseteo del local storage - Solo para pruebas
+//localStorage.clear();
+
 document.addEventListener('DOMContentLoaded', () => {
     mostrarPedido();
     mostrarHora();
